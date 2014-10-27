@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import numpy
 
 
 def plot_scrambled_binary(binary):
@@ -37,7 +38,14 @@ def plot_scrambled_binary(binary):
     plt.show()
 
 
-def plot(x, y):
+def plot(x, y, show=True):
     plt.plot(x, y)
     plt.grid()
-    plt.show()
+    if show:
+        plt.show()
+
+
+def scatter(x, y, area=10, color=10, alpha=0.5, show=True):
+    plt.scatter(x, y, s=area, c=numpy.random.rand(50), alpha=alpha)
+    if show:
+        plt.show()
