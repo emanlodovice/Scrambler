@@ -20,28 +20,37 @@ class Sampling(object):
             self.c*sin(2*pi*self.f*t) + self.a*cos(2*pi*self.f*t) + \
             self.b*cos(2*pi*self.f*t) + self.c*cos(2*pi*self.f*t)
 
-    def sampling_graph(self):
-        self.x = linspace(0, 100, 100)
+    def sampling_graph(self, time_step):
+        self.x = []
+        cur_x = 0
+        while cur_x < 10:
+            self.x.append(cur_x)
+            cur_x += time_step
         self.y = []
         for i in self.x:
             self.y.append(self.get_y(i))
         self.max = max(self.y)
         self.min = min(self.y)
-        plot(self.x, self.y)
+        plot(self.x, self.y, show=False)
 
     def sample(self, time_step, levels, limit):
         nums = []
         cur_time = 0
         gap = (self.max - self.min) / levels
         max_len = len(str(bin(levels-1)[2:]))
+        xx = []
+        yy = []
         while cur_time < limit:
+            xx.append(cur_time)
             apt = self.get_y(cur_time)
+            yy.append(apt)
             num = abs(int(apt-self.min/gap))
             if num == levels:
                 num -= 1
             f = '{0:0'+str(max_len)+'b}'
             nums.append(f.format(num))
             cur_time += time_step
+        scatter(xx, yy)
         return nums
 
     def b8xs(self, binary):
@@ -68,11 +77,9 @@ class Sampling(object):
         return converted+binary
 
 
-# res = b8xs('100000000')
-# plot_scrambled_binary(res)
-g = Sampling(0.5, 1, 1, 2)
-g.sampling_graph()
-binary = g.sample(0.008, 8, 0.1)
+g = Sampling(0.5, 1, 1, 1)
+g.sampling_graph(0.5)
+binary = g.sample(0.5, 8, 10)
 joint_bin = ''.join(binary)
 print joint_bin
 print g.b8xs(joint_bin)
