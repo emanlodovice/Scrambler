@@ -50,7 +50,23 @@ class Sampling(object):
         return scrambled
 
     def hdb3(self, binary):
-        return None
+        converted = ''
+        even = True
+        while len(binary) >= 4:
+            if binary[:4] == '0000':
+                if even:
+                    converted += '000V'
+                    even = not even
+                else:
+                    converted += 'B00V'
+                binary = binary[4:]
+            else:
+                if binary[0] == '1':
+                    even = not even
+                converted += binary[0]
+                binary = binary[1:]
+        return converted+binary
+
 
 # res = b8xs('100000000')
 # plot_scrambled_binary(res)
@@ -60,3 +76,8 @@ binary = g.sample(0.008, 8, 0.1)
 joint_bin = ''.join(binary)
 print joint_bin
 print g.b8xs(joint_bin)
+print g.hdb3(joint_bin)
+
+a = '1010000011000011000000'
+print g.hdb3(a)
+print a
